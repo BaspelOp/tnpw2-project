@@ -7,7 +7,7 @@
 </script>
 
 <footer>
-    ©2025 | Široký Vojtěch & Hlušička Šimon - Studentský zápočtový projekt | sirokvo1@uhk.cz & simon@uhk.cz
+    ©2025 | Široký Vojtěch & Hlušička Šimon - Studentský zápočtový projekt | sirokvo1@uhk.cz & hlusisi1@uhk.cz
 </footer>    
 
 <style>
