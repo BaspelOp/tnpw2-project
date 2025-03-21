@@ -1,13 +1,16 @@
 services:
-  frontend:
-    build: ./frontend
+  db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ""
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: bazar
     ports:
-      - "5173:5173"
-    depends_on:
-      - backend
+      - "3306:3306"
     volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - db_data:/var/lib/mysql
 
   backend:
     build: ./backend
@@ -21,18 +24,15 @@ services:
       - ./backend:/app
       - /app/node_modules
 
-  db:
-    image: mariadb:latest
-    restart: always
-    environment:
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: password
-      MARIADB_ROOT_PASSWORD: password
-      MYSQL_DATABASE: bazar
+  frontend:
+    build: ./frontend
     ports:
-      - "3306:3306"
+      - "5173:5173"
+    depends_on:
+      - backend
     volumes:
-      - db_data:/var/lib/mysql
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   db_data:
