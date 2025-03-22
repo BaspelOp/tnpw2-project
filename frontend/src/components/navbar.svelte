@@ -7,12 +7,4 @@
     });
 </script>
 
-<div class="container">
-    <nav class="navbar">
-        <a href="{base}/login">Login</a>
-    </nav>
-</div>
-
-<style>
-    
-</style>
+      
