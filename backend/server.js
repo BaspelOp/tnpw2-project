@@ -22,17 +22,3 @@ async function startServer() {
 }
 
 startServer();
-
-// API pro získání ...
-app.get('api/advertisements', async (req, res) => {
-    try {
-        // const connection = await pool.getConnection();
-        // const [results] = await connection.query('SELECT * FROM advertisements');
-        // connection.release();
-        // res.json(results);
-
-        res.json("Testovací data");
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});

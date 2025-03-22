@@ -12,11 +12,7 @@ Jednoduchý web využívající technologie Svelte, Node.JS. Web byl vytvořen v
 Create new file named .env 
 
 Paste:
-
-DB_HOST=localhost
-
-DB_USER=root
-
-DB_NAME=bazar
-
-DB_PORT=3306
+- DB_HOST=localhost
+- DB_USER=root
+- DB_NAME=bazar
+- DB_PORT=3306
