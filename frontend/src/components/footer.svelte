@@ -12,11 +12,13 @@
 
 <style>
     footer {
-        position: absolute;
+        position: fixed;
+        bottom: 0;
+        background-color: var(--darkcolor);
+        color: var(--white);
         bottom: 0;
         left: 0;
         width: 100%;
-        color: black;
         text-align: center;
     }
 </style>
