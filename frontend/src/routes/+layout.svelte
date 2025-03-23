@@ -1,17 +1,15 @@
 <script>
     import { base } from '$app/paths';
-    import Navbar from '../components/navbar.svelte';
-    import Footer from '../components/footer.svelte';
+    import Navbar from '$components/navbar.svelte';
+    import Footer from '$components/footer.svelte';
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-<link rel="icon" type="image/x-icon" href="/media/favicon.svg">
 
 <svelte:head>
     <title>Home | Bazar</title>
-    <link rel="icon" type="image/svg" href="{base}/src/media/favicon.svg" />
 </svelte:head>
 
 <main>
