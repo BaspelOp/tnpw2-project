@@ -1,7 +1,6 @@
 <script>
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
-    import logo from '../media/logo_main.svg'
 
     let isMenuOpen = false;
 
@@ -10,8 +9,11 @@
     }
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_consider_explicit_label -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div class="navbar">
-    <a href="/" class="logo"><img src={logo} alt="AUTODILY.CZ"></a>
+    <a href="/" class="logo"><img src="{base}/media/logo_main.svg" alt="AUTODILY.CZ"></a>
     <nav class:open={isMenuOpen}>
         <ul>
             <li on:click={() => (isMenuOpen = false)}><a href="/">Kategorie</a></li>
