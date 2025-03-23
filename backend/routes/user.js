@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../database_init/init_db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
+const pool = require('../server');
 
 router.post('/', async (req, res) => {
     try {
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
         `;
         const values = [username, email, phone, hashedPassword];
 
-        pool.query(sql, values, (err, result) => {
+        pool.query(sql, values, (err, res) => {
             if (err) {
                 console.error("Error registering user: ", err);
                 return res.status(500).json({ error: "Error registering user" });
