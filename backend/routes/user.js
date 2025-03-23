@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const pool = require('../server');
 
-router.post('/', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const { username, email, phone, password } = req.body;
 
@@ -27,6 +27,45 @@ router.post('/', async (req, res) => {
             }
             res.status(201).json({ message: "User registered successfully" });
         });
+    } catch (err) {
+        console.error("Error: ", err);
+        res.status(500).json({ error: "Error" });
+    }
+});
+
+router.get('/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+
+        const sql = `
+            SELECT * FROM user
+            WHERE email = ?
+        `;
+
+        pool.query(sql, [email], async (err, res) => {
+            if (err) {
+                console.error("Error logging in: ", err);
+                return res.status(500).json({ error: "Error logging in" });
+            }
+
+            if (res.length === 0) {
+                return res.status(401).json({ error: "Invalid credentials" });
+            }
+
+            const user = res[0];
+            const validPassword = await bcrypt.compare(password, user.hashedPassword);
+
+            if (!validPassword) {
+                return res.status(401).json({ error: "Invalid credentials" });
+            }
+
+            res.status(200).json({ message: "Logged in successfully" });
+        });
+
     } catch (err) {
         console.error("Error: ", err);
         res.status(500).json({ error: "Error" });
