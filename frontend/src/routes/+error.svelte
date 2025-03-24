@@ -1,24 +1,28 @@
 <script>
-    import { page } from '$app/stores';
+    import { page } from '$app/state';
+    import { base } from '$app/paths';
 </script>
 
 <svelte:head>
-    <title>Error | Bazar</title>
+    <title>Stránka nenalezena | Bazar</title>
 </svelte:head>
 
 <div class="container">
-    <h1>{$page.error.message}</h1>
+    <h1>Error {page.status}</h1>
+    <img src="{base}/src/media/notfound.gif" alt="notfound">
+    <p>Požadovaná stránka nebyla nalezena.</p>
 </div>
 
 <style>
     .container {
-        font-family: 'Poppins', sans-serif;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: black;
-        font-weight: bold;
-        font-size: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 24pt;
+        color: var(--textcolor2)
+    }
+    .container > img{
+        border-radius: 20px;
+        margin: 5vh;
     }
 </style>
