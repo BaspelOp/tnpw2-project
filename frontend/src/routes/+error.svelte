@@ -9,7 +9,7 @@
 
 <div class="container">
     <h1>Error {page.status}</h1>
-    <img src="{base}/src/media/notfound.gif" alt="notfound">
+    <img src="{base}/media/notfound.gif" alt="notfound">
     <p>Požadovaná stránka nebyla nalezena.</p>
 </div>
 
