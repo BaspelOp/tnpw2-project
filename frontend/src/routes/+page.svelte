@@ -1,6 +1,5 @@
 <script>
     import { base } from '$app/paths';
-    import Navbar from '../components/navbar.svelte';
 </script>
 
 <main>
@@ -8,19 +7,19 @@
         <div class="cardholder">
             <div class="card">
                 <h2>Motory</h2>
-                <img src="{base}/src/media/engine.svg" alt="Motor">
+                <img src="{base}/media/engine.svg" alt="Motor">
             </div>
             <div class="card">
                 <h2>Převodovky</h2>
-                <img src="{base}/src/media/transmission.svg" alt="Převodovka">
+                <img src="{base}/media/transmission.svg" alt="Převodovka">
             </div>
             <div class="card">
                 <h2>Budíky</h2>
-                <img src="{base}/src/media/dashboard.svg" alt="Tachometr">
+                <img src="{base}/media/dashboard.svg" alt="Tachometr">
             </div>
             <div class="card">
                 <h2>Elektronika</h2>
-                <img src="{base}/src/media/battery.svg" alt="Akumulátor">
+                <img src="{base}/media/battery.svg" alt="Akumulátor">
             </div>
         </div>
     </div>
