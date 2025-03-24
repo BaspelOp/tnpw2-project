@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const pool = require('../server');
+const { pool } = require('../database');
 
 router.post('/register', async (req, res) => {
     try {
@@ -20,7 +20,7 @@ router.post('/register', async (req, res) => {
         `;
         const values = [username, email, phone, hashedPassword];
 
-        pool.query(sql, values, (err, res) => {
+        await pool.query(sql, values, (err, res) => {
             if (err) {
                 console.error("Error registering user: ", err);
                 return res.status(500).json({ error: "Error registering user" });
@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -41,31 +41,20 @@ router.get('/login', async (req, res) => {
             return res.status(400).json({ error: "Missing required fields" });
         }
 
-        const sql = `
-            SELECT * FROM user
-            WHERE email = ?
-        `;
+        const [rows] = await pool.query('SELECT * FROM user WHERE email = ?', [email]);
 
-        pool.query(sql, [email], async (err, res) => {
-            if (err) {
-                console.error("Error logging in: ", err);
-                return res.status(500).json({ error: "Error logging in" });
-            }
+        if (rows.length === 0) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
 
-            if (res.length === 0) {
-                return res.status(401).json({ error: "Invalid credentials" });
-            }
+        const user = rows[0];
+        const validPassword = await bcrypt.compare(password, user.hashedPassword);
 
-            const user = res[0];
-            const validPassword = await bcrypt.compare(password, user.hashedPassword);
+        if (!validPassword) {
+            return res.status(401).json({ error: "Invalid credentials" });
+        }
 
-            if (!validPassword) {
-                return res.status(401).json({ error: "Invalid credentials" });
-            }
-
-            res.status(200).json({ message: "Logged in successfully" });
-        });
-
+        res.status(200).json({ message: "Logged in successfully" });
     } catch (err) {
         console.error("Error: ", err);
         res.status(500).json({ error: "Error" });

@@ -3,24 +3,11 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
 const initDB = require('./database_init/init_db');
+const { pool, dbConfig } = require('./database');
 const userRoutes = require('./routes/user');
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-const dbConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT
-}
-
-const pool = mysql.createPool({
-    ...dbConfig,
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
-});
 
 async function startServer() {
     try {
@@ -29,6 +16,7 @@ async function startServer() {
             dbConfig.password = process.env.DB_PASSWORD;
         }
 
+        console.log("Connecting to database...");
         const connection = await mysql.createConnection(dbConfig);
 
         if (!connection) {
@@ -52,5 +40,3 @@ async function startServer() {
 }
 
 startServer();
-
-module.exports = pool;

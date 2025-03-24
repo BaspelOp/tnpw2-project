@@ -1,21 +1,46 @@
 <script>
-
+    function logIn() {
+        fetch('http://localhost:3000/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: document.getElementById('exampleInputEmail1').value,
+                password: document.getElementById('exampleInputPassword1').value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+            if(data.error){
+                alert(data.error);
+                return;
+            }
+            window.location.href = '/';
+            alert(data.message);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Něco se pokazilo, zkuste to znovu');
+        });
+    }
 </script>
 
 <div class="container">
     <div class="login-card">
         <h1>Login</h1>
-            <form>
-                <div class="form-group">
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="adresa@seznam.cz">
-                </div>
-                <div class="form-group">
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Heslo">
-                </div>
-                <div class="btn-group">
-                    <button class="btn">Přihlásit se</button>
-                </div>
-            </form>
+        <form onsubmit={logIn}>
+            <div class="form-group">
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="adresa@seznam.cz" required>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Heslo" required>
+            </div>
+            <div class="btn-group">
+                <button class="btn" type="submit">Přihlásit se</button>
+            </div>
+        </form>
     </div>
 </div>
 
