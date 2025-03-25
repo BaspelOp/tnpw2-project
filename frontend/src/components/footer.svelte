@@ -12,7 +12,6 @@
 
 <style>
     footer {
-        position: fixed;
         bottom: 0;
         background-color: var(--darkcolor);
         color: var(--white);

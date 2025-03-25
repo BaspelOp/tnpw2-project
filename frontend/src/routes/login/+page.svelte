@@ -49,7 +49,7 @@
         background-color: var(--lightcolor);
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         padding-top: 8vh;
         border-radius: 10px;
         min-width: 25vw;
@@ -62,31 +62,37 @@
         .login-card{
             border-radius: 0;
         }
+        form{
+            min-width: 100%;
+        }
     }
 
     form{
-        min-width: 50vw;
+        width: 50vw;
+        padding: 2vh;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
+        align-items: flex-start;
     }
 
     form > .form-group{
-        padding:2vh;
+        width: 100%;
+        padding-top: 2vh
     }
 
     .form-group > input{
-        border-color: white;
+        width: 100%;
+        min-width: 20vw;
+        border: 0;
         border-radius: 0.5rem;
         outline: 0;
         line-height: 1.5;
         padding: 5px;
-        min-width: 100%;
+        min-height: 6vh;
     }
 
     form > .btn-group{
-        padding:2vh;
+        padding-top:2vh;
         padding-bottom: 4vh;
     }
     .btn-group > .btn{

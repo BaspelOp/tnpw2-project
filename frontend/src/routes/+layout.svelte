@@ -13,11 +13,13 @@
 </svelte:head>
 
 <main>
-    <Navbar />
-        <div class="container">
-            <slot></slot>
-        </div>
-    <Footer />
+    <div class="page">
+        <Navbar />
+            <div class="container">
+                <slot></slot>
+            </div>
+        <Footer />
+    </div>
 </main>
 
 <style global>
@@ -42,7 +44,6 @@
         color: var(--textcolor);
         background: var(--bgcolor);
         max-width: 100%;
-        overflow-x: hidden;
     }
 
     :global(:root){
@@ -54,6 +55,22 @@
         --textcolor: #FFFFFF;
         --textcolor2: #000000;
         --burgercolor: #FFFFFF;
+    }
+
+    .page{
+        margin: 50px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: var(--white);
+        box-shadow: 0 0 10px gray;
+    }
+
+    @media only screen and (max-width:768px){
+        .page{
+            margin: 0;
+        }
     }
 
     .container{
