@@ -54,6 +54,7 @@
         --white: #FFFFFF;
         --textcolor: #FFFFFF;
         --textcolor2: #000000;
+        --errorcolor: #FF0000;
         --burgercolor: #FFFFFF;
     }
 

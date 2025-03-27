@@ -22,7 +22,8 @@ const config = {
 			relative: false,
 		},
 		alias: {
-			$components: path.resolve('./src/components')
+			$components: path.resolve('./src/components'),
+			$stores: path.resolve('./src/stores')
 		}
 	},
 	preprocess: [vitePreprocess()]

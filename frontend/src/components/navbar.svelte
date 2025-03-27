@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
+    import { auth, logout } from '$stores/auth';
 
     let isMenuOpen = false;
 
@@ -16,9 +17,27 @@
     <a href="/" class="logo"><img src="{base}/media/logo_main.svg" alt="AUTODILY.CZ"></a>
     <nav class:open={isMenuOpen}>
         <ul>
-            <li on:click={() => (isMenuOpen = false)}><a href="/">Kategorie</a></li>
-            <li on:click={() => (isMenuOpen = false)}><a href="{base}/kontakt">Kontakt</a></li>
-            <li on:click={() => (isMenuOpen = false)} class="sign-in-btn"><a href="{base}/login">Přihlásit se</a></li>
+            <li on:click={() => (isMenuOpen = false)}>
+                <a href="/">Kategorie</a>
+            </li>
+            <li on:click={() => (isMenuOpen = false)}>
+                <a href="{base}/kontakt">Kontakt</a>
+            </li>
+            {#if $auth.user}
+                <li on:click={() => (isMenuOpen = false)} class="profile">
+                    <a href="{base}/profil">Profil</a>
+                </li> <!-- Tady by byla kdyžtak nějaká fotka toho obrázku či něčeho, zatím jsem sem dal jen profil -->
+                <li on:click={() => { isMenuOpen = false; logout(); }} class="log-out-btn">
+                    <a href="/">Odhlásit se</a>
+                </li>                  
+            {:else}
+                <li on:click={() => (isMenuOpen = false)} class="sign-in-btn">
+                    <a href="{base}/login">Přihlášení</a>
+                </li>
+                <li on:click={() => (isMenuOpen = false)} class="sign-up-btn">
+                    <a href="{base}/register">Registrace</a>
+                </li>
+            {/if}
         </ul>
     </nav>
     <button class="burger" on:click={toggleMenu} class:open={isMenuOpen}>
@@ -96,7 +115,7 @@
         color: var(--textcolor);
     }
 
-    .sign-in-btn > a{
+    .sign-in-btn, .sign-up-btn > a{
         background-color: var(--mediumcolor);
         color: var(--white);
         padding: 0.5rem;
@@ -158,8 +177,9 @@
             flex-direction: row;
             gap: 2vw;
         }
-        .sign-in-btn{
-            margin-inline: 2vw;
+
+        .sign-up-btn {
+            margin-right: 2vw;
         }
     }
 
