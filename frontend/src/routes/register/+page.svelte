@@ -1,20 +1,22 @@
 <script>
-    import { login } from '$stores/auth'
+    import { base } from '$app/paths';
+    import { login } from '$stores/auth';
 
+    let username = '';
+    let phone = '';
     let email = '';
     let password = '';
     let errorMessage = '';
 
-
-    async function handleLogin() {
+    async function handleRegister() {
         try {
-            const response = await fetch('http://localhost:3000/api/users/login', {
+            const response = await fetch('http://localhost:3000/api/users/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, password })
-            });
+                body: JSON.stringify({ username, phone, email, password })
+            })
 
             const data = await response.json();
             if (!response.ok) {
@@ -22,8 +24,8 @@
                 return;
             }
 
-            login(data.user, data.token);
-            window.location.href = '/';
+            alert("Registrace proběhla úspěšně, nyní se můžete přihlásit");
+            window.location.href = '/login';
         } catch (err) {
             errorMessage = "Chyba serveru";
             console.error(err);
@@ -32,14 +34,20 @@
 </script>
 
 <div class="container">
-    <div class="login-card">
+    <div class="register-card">
         {#if errorMessage}
             <div class="alert">
                 {errorMessage}
             </div>
         {/if}
-        <h1>Login</h1>
-        <form onsubmit={handleLogin}>
+        <h1>Register</h1>
+        <form onsubmit={handleRegister}>
+            <div class="form-group">
+                <input type="text" bind:value={username} class="form-control" aria-describedby="emailHelp" placeholder="Jméno" required>
+            </div>
+            <div class="form-group">
+                <input type="tel" bind:value={phone} class="form-control" aria-describedby="emailHelp" placeholder="Telefon" required>
+            </div>
             <div class="form-group">
                 <input type="email" bind:value={email} class="form-control" aria-describedby="emailHelp" placeholder="adresa@seznam.cz" required>
             </div>
@@ -47,18 +55,18 @@
                 <input type="password" bind:value={password} class="form-control" placeholder="Heslo" required>
             </div>
             <div class="btn-group">
-                <button class="btn" type="submit">Přihlásit se</button>
+                <button class="btn" type="submit">Registrovat se</button>
             </div>
         </form>
     </div>
 </div>
 
 <style>
-    .login-card{
+    .register-card{
         background-color: var(--lightcolor);
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         padding-top: 8vh;
         border-radius: 10px;
         min-width: 25vw;
@@ -68,40 +76,34 @@
         .container{
             width: 100%;
         }
-        .login-card{
+        .register-card{
             border-radius: 0;
-        }
-        form{
-            min-width: 100%;
         }
     }
 
     form{
-        width: 50vw;
-        padding: 2vh;
+        min-width: 50vw;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: space-between;
     }
 
     form > .form-group{
-        width: 100%;
-        padding-top: 2vh
+        padding:2vh;
     }
 
     .form-group > input{
-        width: 100%;
-        min-width: 20vw;
-        border: 0;
+        border-color: white;
         border-radius: 0.5rem;
         outline: 0;
         line-height: 1.5;
         padding: 5px;
-        min-height: 6vh;
+        min-width: 100%;
     }
 
     form > .btn-group{
-        padding-top:2vh;
+        padding:2vh;
         padding-bottom: 4vh;
     }
     .btn-group > .btn{
