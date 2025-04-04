@@ -61,13 +61,13 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ error: "Všechna pole nejsou vyplněna!" });
         }
 
-        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        const [result] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
 
-        if (rows.length === 0) {
+        if (result.length === 0) {
             return res.status(401).json({ error: "Chybné přihlašovací údaje!" });
         }
 
-        const user = rows[0];
+        const user = result[0];
         const validPassword = await bcrypt.compare(password, user.password_hash);
 
         if (!validPassword) {
