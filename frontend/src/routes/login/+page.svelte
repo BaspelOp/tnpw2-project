@@ -1,5 +1,6 @@
 <script>
     import { login } from '$stores/auth'
+    import { base } from '$app/paths';
 
     let email = '';
     let password = '';
@@ -49,7 +50,9 @@
             <div class="btn-group">
                 <button class="btn" type="submit">Přihlásit se</button>
             </div>
+            <div class="divisor"></div>
         </form>
+        <a class="sign-up-btn" href="{base}/register">Nemáte účet? Zaregistrujte se</a>
     </div>
 </div>
 
@@ -59,7 +62,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding-top: 8vh;
+        padding: 8vh;
         border-radius: 10px;
         min-width: 25vw;
     }
@@ -78,7 +81,6 @@
 
     form{
         width: 50vw;
-        padding: 2vh;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -122,5 +124,15 @@
         color: var(--errorcolor);
         border-radius: 10px;
         padding: 1vh;
+    }
+    .sign-up-btn{
+        color: var(--white);
+        text-decoration: underline;
+        margin-top: 5vh;
+    }
+    .divisor{
+        background-color: var(--white);
+        height: 1px;
+        width: 100%;
     }
 </style>

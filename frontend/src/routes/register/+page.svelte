@@ -40,7 +40,7 @@
                 {errorMessage}
             </div>
         {/if}
-        <h1>Register</h1>
+        <h1>Registrace</h1>
         <form onsubmit={handleRegister}>
             <div class="form-group">
                 <input type="text" bind:value={username} class="form-control" aria-describedby="emailHelp" placeholder="Jméno" required>
@@ -57,17 +57,19 @@
             <div class="btn-group">
                 <button class="btn" type="submit">Registrovat se</button>
             </div>
+            <div class="divisor"></div>
+            <a class="login-btn" href="{base}/login">Už jste se zaregistrovali? Přihlašte se</a>
         </form>
     </div>
 </div>
 
 <style>
-    .register-card{
+        .register-card{
         background-color: var(--lightcolor);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        padding-top: 8vh;
+        align-items: flex-start;
+        padding: 8vh;
         border-radius: 10px;
         min-width: 25vw;
     }
@@ -79,31 +81,36 @@
         .register-card{
             border-radius: 0;
         }
+        form{
+            min-width: 100%;
+        }
     }
 
     form{
-        min-width: 50vw;
+        width: 50vw;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
+        align-items: flex-start;
     }
 
     form > .form-group{
-        padding:2vh;
+        width: 100%;
+        padding-top: 2vh
     }
 
     .form-group > input{
-        border-color: white;
+        width: 100%;
+        min-width: 20vw;
+        border: 0;
         border-radius: 0.5rem;
         outline: 0;
         line-height: 1.5;
         padding: 5px;
-        min-width: 100%;
+        min-height: 6vh;
     }
 
     form > .btn-group{
-        padding:2vh;
+        padding-top:2vh;
         padding-bottom: 4vh;
     }
     .btn-group > .btn{
@@ -124,5 +131,22 @@
         color: var(--errorcolor);
         border-radius: 10px;
         padding: 1vh;
+    }
+
+    .alert{
+        background-color: var(--darkcolor);
+        color: var(--errorcolor);
+        border-radius: 10px;
+        padding: 1vh;
+    }
+    .login-btn{
+        color: var(--white);
+        text-decoration: underline;
+        margin-top: 5vh;
+    }
+    .divisor{
+        background-color: var(--white);
+        height: 1px;
+        width: 100%;
     }
 </style>

@@ -34,9 +34,6 @@
                 <li on:click={() => (isMenuOpen = false)} class="sign-in-btn">
                     <a href="{base}/login">Přihlášení</a>
                 </li>
-                <li on:click={() => (isMenuOpen = false)} class="sign-up-btn">
-                    <a href="{base}/register">Registrace</a>
-                </li>
             {/if}
         </ul>
     </nav>
@@ -115,7 +112,7 @@
         color: var(--textcolor);
     }
 
-    .sign-in-btn, .sign-up-btn > a{
+    .sign-in-btn > a{
         background-color: var(--mediumcolor);
         color: var(--white);
         padding: 0.5rem;
@@ -178,7 +175,7 @@
             gap: 2vw;
         }
 
-        .sign-up-btn {
+        .sign-in-btn {
             margin-right: 2vw;
         }
     }
