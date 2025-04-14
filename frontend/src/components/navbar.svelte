@@ -18,16 +18,13 @@
     <nav class:open={isMenuOpen}>
         <ul>
             <li on:click={() => (isMenuOpen = false)}>
-                <a href="/">Kategorie</a>
-            </li>
-            <li on:click={() => (isMenuOpen = false)}>
                 <a href="{base}/kontakt">Kontakt</a>
             </li>
             {#if $auth.user}
                 <li on:click={() => (isMenuOpen = false)} class="profile">
                     <a href="{base}/profil">Profil</a>
-                </li> <!-- Tady by byla kdyžtak nějaká fotka toho obrázku či něčeho, zatím jsem sem dal jen profil -->
-                <li on:click={() => { isMenuOpen = false; logout(); }} class="log-out-btn">
+                </li> <!-- Tady by byla kdyžtak nějaká fotka toho obrázku či něčeho, zatím jsem sem dal jen profil --> <!-- obrazek je zatim placeholder.webp-->
+                <li on:click={() => { isMenuOpen = false; logout(); }} class="sign-in-btn">
                     <a href="/">Odhlásit se</a>
                 </li>                  
             {:else}
@@ -46,6 +43,7 @@
 
 <style>
     .navbar{
+        width: 100%;
         background-color: var(--lightcolor);
         border: 0;
         border-bottom: 0.5vh;

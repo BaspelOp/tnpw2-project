@@ -58,6 +58,7 @@
 
 <style>
     .login-card{
+        margin: 50px;
         background-color: var(--lightcolor);
         display: flex;
         flex-direction: column;

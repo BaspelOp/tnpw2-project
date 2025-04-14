@@ -15,10 +15,11 @@
 <main>
     <div class="page">
         <Navbar />
-            <div class="container">
                 <slot></slot>
+            <div class="container">
+                
             </div>
-        <Footer />
+        <Footer />       
     </div>
 </main>
 
@@ -60,11 +61,12 @@
 
     .page{
         margin: 50px;
+        margin-bottom: 0px;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-color: var(--white);
+        background-color: var(--bgcolor);
         box-shadow: 0 0 10px gray;
     }
 
@@ -76,10 +78,10 @@
 
     .container{
         width: 100%;
-        min-height: 20vh;
-        margin-top: 10vh;
+        min-height: 100vh;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
         color: var(--textcolor);
     }

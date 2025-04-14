@@ -6,19 +6,19 @@
     <div class="container">
         <div class="cardholder">
             <div class="card">
-                <h2>Motory</h2>
+                <p>Motory</p>
                 <img src="{base}/media/engine.svg" alt="Motor">
             </div>
             <div class="card">
-                <h2>Převodovky</h2>
+                <p>Převodovky</p>
                 <img src="{base}/media/transmission.svg" alt="Převodovka">
             </div>
             <div class="card">
-                <h2>Budíky</h2>
+                <p>Budíky</p>
                 <img src="{base}/media/dashboard.svg" alt="Tachometr">
             </div>
             <div class="card">
-                <h2>Elektronika</h2>
+                <p>Elektronika</p>
                 <img src="{base}/media/battery.svg" alt="Akumulátor">
             </div>
         </div>
@@ -42,7 +42,7 @@
         height: 25vh;
         width: 25vh;
         border-radius: 10px;
-        margin: 2vw;
+        margin: 5px;
     }
 
     .card:hover{
