@@ -12,7 +12,8 @@ Jednoduchý web využívající technologie Svelte, Node.JS. Web byl vytvořen v
 Create new file named .env 
 
 Paste:
-- DB_HOST=localhost
+- DB_HOST=db
 - DB_USER=root
 - DB_NAME=bazar
 - DB_PORT=3306
+- JWT_SECRET=5f2d5a87d24d6d22b22c4529d89320f89cd4be189d2983df8baf4e38bb15c9a2 | This secret is for testing purpose only

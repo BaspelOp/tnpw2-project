@@ -30,6 +30,9 @@
         box-sizing: border-box;
         text-decoration: none;
         font-family: "Funnel Sans", sans-serif;
+        -webkit-user-select: none;
+        -webkit-user-drag: none;
+        -webkit-app-region: no-drag;
     }
 
     :global(html){
