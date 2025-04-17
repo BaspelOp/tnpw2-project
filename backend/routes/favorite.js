@@ -91,3 +91,5 @@ router.get('/getAll', authenticateToken, async (req, res) => {
         res.status(500).json({ error: "Error" });
     }
 });
+
+module.exports = router;

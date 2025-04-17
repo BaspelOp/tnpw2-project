@@ -5,6 +5,10 @@ const mysql = require('mysql2/promise');
 const initDB = require('./database_init/init_db');
 const { pool, dbConfig } = require('./database');
 const userRoutes = require('./routes/user');
+const advertisementRoutes = require('./routes/advertisement');
+const categoryRoutes = require('./routes/category');
+const favoriteRoutes = require('./routes/favorite');
+const reviewRoutes = require('./routes/review');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -29,6 +33,10 @@ async function startServer() {
         console.log("Database initialized successfully!");
 
         app.use('/api/users', userRoutes);
+        app.use('/api/advertisements', advertisementRoutes);
+        app.use('/api/categories', categoryRoutes);
+        app.use('/api/favorites', favoriteRoutes);
+        app.use('/api/reviews', reviewRoutes);
 
         app.listen(3000, () => {
             console.log("Server is running on http://localhost:3000");

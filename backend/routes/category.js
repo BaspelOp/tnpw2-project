@@ -41,3 +41,5 @@ router.get('/create', authenticateToken, async (req, res) => {
         res.status(500).json({ error: "Error" });
     }
 });
+
+module.exports = router;

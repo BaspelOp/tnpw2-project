@@ -30,9 +30,13 @@ router.post('/create', authenticateToken, async (req, res) => {
 });
 
 // Endpoint pro get recenzí podle user id
-router.get('/getById', async (req, res) => {
+router.post('/getById', async (req, res) => {
     try {
         const { user_id } = req.body;
+
+        if (!user_id) {
+            return res.status(400).json({ error: "Není vyplněno user_id!" });
+        }
 
         const [reviews] = await pool.query(`
             SELECT r.id, r.rating, r.comment, r.created_at,
@@ -58,3 +62,5 @@ router.get('/getById', async (req, res) => {
         res.status(500).json({ error: "Error" });
     }
 });
+
+module.exports = router;
