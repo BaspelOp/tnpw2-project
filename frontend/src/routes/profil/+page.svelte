@@ -8,7 +8,7 @@
             <img class="profilepicture" src="{base}/media/placeholder.webp">
             <button class="message">Napsat Zprávu</button>
         </div>
-        <div class="profilecard">
+        <div class="profileinfocard">
             <table>
                 <thead>
                     <tr>
@@ -40,7 +40,15 @@
         align-items: flex-start;
     }
     .profilecard{
-        width: 100%;
+        max-width: 25%; 
+        margin: 10px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--white);
+    }
+    .profileinfocard{
+        width: 100%; 
         margin: 10px;
         padding: 10px;
         display: flex;

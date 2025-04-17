@@ -15,6 +15,10 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div class="navbar">
     <a href="/" class="logo"><img src="{base}/media/logo_main.svg" alt="AUTODILY.CZ"></a>
+    <div class="searchbar">
+        <input type="text" class="searchbar-text" placeholder="Vyhledat">
+        <button type="button" class="searchbutton"><img class="searchbuttonimg" src="{base}/media/searchbutton.svg"></button>
+    </div>
     <nav class:open={isMenuOpen}>
         <ul>
             <li on:click={() => (isMenuOpen = false)}>
@@ -42,6 +46,34 @@
 </div>
 
 <style>
+    .searchbar{
+        max-width: 33%;
+        margin: 10px;
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background-color: var(--white);
+        border-radius: 1000px;
+    }
+    .searchbutton{
+        background-color: transparent;
+        width: 10%;
+        border: none;
+    }
+    .searchbuttonimg{
+        width: 50%;
+        height: 50%;
+    }
+    .searchbar-text{
+        padding: 2px;
+        width: 100%;
+        border: none;
+        &:focus-visible{
+            outline: none;
+        }
+        min-width: 25%;
+    }
     .navbar{
         width: 100%;
         background-color: var(--lightcolor);

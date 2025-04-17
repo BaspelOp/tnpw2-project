@@ -31,6 +31,7 @@
         flex-wrap: wrap;
         justify-content: space-evenly;
         width: 100%;
+        margin-top: 50px;
     }
 
     .card{
@@ -39,8 +40,8 @@
         align-items: center;
         background-color: #ffffff;
         color: var(--textcolor2);
-        height: 25vh;
-        width: 25vh;
+        height: 20vh;
+        width: 20vh;
         border-radius: 10px;
         margin: 5px;
     }
@@ -53,7 +54,7 @@
     img{
         padding: 1rem;
         overflow: hidden;
-        width: 100%;
-        height: 100%;
+        width: 75%;
+        height: 75%;
     }
 </style>
