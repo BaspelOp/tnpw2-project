@@ -74,7 +74,7 @@ router.post('/create', authenticateToken, upload.array('images', 10), async (req
 });
 
 // Endpoint pro get inzerátů podle user id
-router.get('/getById', async (req, res) => {
+router.post('/getById', async (req, res) => {
     try {
         const { user_id } = req.body;
 
@@ -100,10 +100,6 @@ router.get('/getById', async (req, res) => {
             WHERE a.user_id = ?
             GROUP BY a.id
         `, [user_id]);
-
-        if (result.length === 0) {
-            return res.status(404).json({ error: "Inzerát nenalezen!" });
-        }
 
         const advertisements = result.map(advertisement => ({
             ...advertisement,

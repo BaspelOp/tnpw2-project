@@ -1,5 +1,101 @@
 <script>
     import { base } from '$app/paths';
+    import { onMount } from 'svelte';
+    import { auth } from '$stores/auth';
+    import { writable } from 'svelte/store';
+
+    let userId = $auth.user.id;
+    let userData = writable({});
+
+    async function fetchUserData() {
+        try {
+            const response = await fetch('http://localhost:3000/api/users/getById', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: userId })
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+            
+            console.log("User data", data);
+
+            userData.update((prevData) => ({
+                ...prevData,
+                username: data.username,
+                email: data.email,
+                phone: data.phone,
+                created_at: data.created_at
+            }));
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function fetchUserReviews() {
+        try {
+            const response = await fetch('http://localhost:3000/api/reviews/getById', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: userId })
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+
+            console.log("User reviews", data);
+
+            userData.update((prevData) => ({
+                ...prevData,
+                reviews: data
+            }));
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function fetchUserAdvertisements() {
+        try {
+            const response = await fetch('http://localhost:3000/api/advertisements/getById', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ user_id: userId })
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+
+            console.log("User advertisements", data);
+
+            userData.update((prevData) => ({
+                ...prevData,
+                advertisements: data
+            }));   
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    onMount(() => {
+        fetchUserData();
+        fetchUserReviews();
+        fetchUserAdvertisements();
+    });
 </script>
 
 <div class="container">
@@ -13,15 +109,19 @@
                 <thead>
                     <tr>
                         <th scope="row">Jmeno</th>
-                        <td>Jmeno</td>
+                        <td>{$userData.username}</td>
                     </tr>
                     <tr>
                         <th scope="row">E-mail</th>
-                        <td>Email</td>
+                        <td>{$userData.email}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Adresa</th>
-                        <td>Adresa</td>
+                        <th scope="row">Tel. Číslo</th>
+                        <td>{$userData.phone}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Datum založení</th>
+                        <td>{(new Date($userData.created_at)).toLocaleDateString("cs-CZ")}</td>
                     </tr>
                 </thead>
             </table>

@@ -87,10 +87,10 @@ router.post('/login', async (req, res) => {
 });
 
 // Endpoint pro get uživatele podle id
-router.get('/getById', async (req, res) => {
+router.post('/getById', async (req, res) => {
     try {
         const { user_id } = req.body;
-
+        
         if (!user_id) {
             return res.status(400).json({ error: "Není vyplněno user_id!" });
         }
