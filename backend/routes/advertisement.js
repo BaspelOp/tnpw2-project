@@ -34,7 +34,7 @@ router.post('/create', authenticateToken, upload.array('images', 10), async (req
         };
 
         const [result] = await pool.query(
-            'INSERT INTO advertisements (user_id, category_id, title, description, price, location) VALUES (?, ?, ?, ?, ?, ?)',
+            'INSERT INTO advertisement (user_id, category_id, title, description, price, location) VALUES (?, ?, ?, ?, ?, ?)',
             [user_id, category_id, title, description, price, location]
         )
 
@@ -54,7 +54,7 @@ router.post('/create', authenticateToken, upload.array('images', 10), async (req
             fs.renameSync(oldPath, newPath);
 
             await pool.query(
-                'INSERT INTO images (advertisement_id, path) VALUES (?, ?)',
+                'INSERT INTO image (advertisement_id, image_url) VALUES (?, ?)',
                 [advertisement_id, `${newPath}`]
             )
             imagePaths.push(`${newPath}`);

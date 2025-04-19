@@ -4,7 +4,7 @@ const { pool } = require('../database');
 const authenticateToken = require('../middleware/authenticateToken');
 
 // Endpoint pro vytvoření kategorie - pouze pro administrátory
-router.get('/create', authenticateToken, async (req, res) => {
+router.post('/create', authenticateToken, async (req, res) => {
     try {
         const { name } = req.body;
         const user_role = req.user.role;
@@ -18,7 +18,7 @@ router.get('/create', authenticateToken, async (req, res) => {
         }
 
         const [existing] = await pool.query(
-            'SELECT * FROM categories WHERE name = ?',
+            'SELECT * FROM category WHERE name = ?',
             [name]
         );
 
@@ -27,7 +27,7 @@ router.get('/create', authenticateToken, async (req, res) => {
         }
 
         const [result] = await pool.query(
-            'INSERT INTO categories (name) VALUES (?)',
+            'INSERT INTO category (name) VALUES (?)',
             [name]
         );
 
@@ -36,6 +36,16 @@ router.get('/create', authenticateToken, async (req, res) => {
         }
 
         res.status(201).json({ message: "Kategorie byla úspěšně vytvořena!" });
+    } catch (err) {
+        console.error("Error: ", err);
+        res.status(500).json({ error: "Error" });
+    }
+});
+
+router.get('/get', async (_, res) => {
+    try {
+        const [categories] = await pool.query('SELECT * FROM category');
+        res.status(200).json(categories);
     } catch (err) {
         console.error("Error: ", err);
         res.status(500).json({ error: "Error" });
