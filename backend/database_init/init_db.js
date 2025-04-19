@@ -26,6 +26,8 @@ async function initDB(connection, pool) {
         await runSQLFile('./database_init/favorites.sql');
         await runSQLFile('./database_init/review.sql');
 
+        await runSQLFile('./database_init/insert_data.sql');
+
         console.log("Database initialization complete!");
     } catch (err) {
         console.error("Database initialization failed:", err);
