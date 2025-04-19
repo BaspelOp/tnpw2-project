@@ -120,6 +120,12 @@
         scale: 0.95;
     }
 
+    .btn:hover{
+        background-color: var(--darkcolor);
+        transition: all 200ms ease-in-out;
+        cursor: pointer;
+    }
+
     .alert{
         background-color: var(--darkcolor);
         color: var(--errorcolor);

@@ -1,24 +1,51 @@
 <script>
+    import { goto } from '$app/navigation';
     import { base } from '$app/paths';
+    import { onMount } from 'svelte';
+
+    let advertisements = [];
+
+    async function fetchAdvertisements() {
+        try {
+            const response = await fetch('http://localhost:3000/api/advertisements/getAll', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch advertisements');
+            }
+
+            const data = await response.json();
+            console.log("Fetched advertisements:", data);
+            advertisements = data;
+        } catch (error) {
+            console.error('Error fetching advertisements:', error);
+        }
+    }
+
+    onMount(() => {
+        fetchAdvertisements();
+    });
+
 </script>
 
 <main>
     <div class="container">
         <div class="cardholder">
-            <div class="card" id="card">
-                <img src="{base}/media/placeholder.webp" alt="placehodlertext" style="width:100%">
-                <h1 class="nazev">Nadpis</h1>
-                <p class="cena">Cena</p>
-                <p class="popis">Popis</p>
-                <button class="detail">Detail</button>
-            </div>
-            <div class="card" id="card">
-                <img src="{base}/media/placeholder.webp" alt="placehodlertext" style="width:100%">
-                <h1 class="nazev">Nadpis</h1>
-                <p class="cena">Cena</p>
-                <p class="popis">Popis</p>
-                <button class="detail">Detail</button>
-            </div>
+            {#each advertisements as advertisement}
+                <div class="card" id="card">
+                    <img src="http://localhost:3000/{advertisement.images[0]}" alt="placehodlertext" style="width:100%">
+                    <h1 class="nazev">{advertisement.title}</h1>
+                    <p class="cena">{advertisement.price} Kč</p>
+                    <p class="popis">{advertisement.description}</p>
+                    <!-- TODO: Tohle je zatím click na detail jen pro debug, jinak to bude odkazovat na nějaký ten modal, aby byl vidět celý inzerát i s images apod... -->
+                    <button onclick={() => goto(`/profil/${advertisement.user_id}`)} class="detail">Detail</button>
+                </div>
+                
+            {/each}
         </div>
     </div>
 </main>

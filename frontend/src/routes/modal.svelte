@@ -1,11 +1,100 @@
 <script>
-	let { showModal = $bindable(), header, children } = $props();
+    import { onMount } from 'svelte';
+    import { writable } from 'svelte/store';
+    import { auth } from '$stores/auth';
 
-	let dialog = $state(); // HTMLDialogElement
+    let { showModal = $bindable(), header, children } = $props();
+	let dialog = $state();
+    let userId = $state(null);
+    let categories = $state([]);
+
+    if ($auth.user) {
+        userId = $auth.user.id;
+    }
 
 	$effect(() => {
 		if (showModal) dialog.showModal();
 	});
+
+    let title = $state('');
+    let description = $state('');
+    let price = $state('');
+    let email = $state('');
+    let phone = $state('');
+    let imagesFile = $state([]);
+    let location = $state('');
+    let category = $state('');
+
+    function handleFileChange(e) {
+        imagesFile = Array.from(e.target.files);
+    }
+
+    async function fetchCategories() {
+        try {
+            const response = await fetch('http://localhost:3000/api/categories/get', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch categories');
+            }
+
+            const data = await response.json();
+            categories = [...data];
+
+            console.log("Fetched categories:", categories);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        } 
+    }
+
+    async function createAdvertisement(e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('category_id', category);
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('location', location);
+
+        for (let i = 0; i < imagesFile.length; i++) {
+            formData.append('images', imagesFile[i]);
+        }
+
+        if (!userId) {
+            formData.append('email', email);
+            formData.append('phone', phone);
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/advertisements/create', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${$auth.token}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create advertisement');
+            }
+
+            const data = await response.json();
+            console.log("Advertisement created:", data);
+
+            dialog.close();
+        } catch (error) {
+            console.error('Error creating advertisement:', error);
+        }
+    }
+
+    onMount(() => {
+        fetchCategories();
+    });
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
@@ -17,12 +106,28 @@
     <button class="closebtn" autofocus onclick={() => dialog.close()}>Zavřít</button>
     <div class="login-card">
         <h1>Přidat inzerát</h1>
-		<form method="POST">
+		<form onsubmit={createAdvertisement}>
             <div class="form-group">
-                <input type="text" id="nazev" class="form-control" placeholder="Název inzerátu" required>
-                <input type="email" id="email" class="form-control" aria-describedby="emailHelp" placeholder="adresa@seznam.cz" required>
-                <input type="tel" id="telefon" class="form-control" placeholder="Telefon" required>
-                <input type="n" id="cena" class="form-control" placeholder="Cena" required>
+                <input type="text" bind:value={title} id="nazev" class="form-control" placeholder="Název inzerátu" required>
+                {#if !userId}
+                    <input type="email" bind:value={email} id="email" class="form-control" aria-describedby="emailHelp" placeholder="adresa@seznam.cz" required>
+                    <input type="tel" bind:value={phone} id="telefon" class="form-control" placeholder="Telefon" required>
+                {/if}
+                <input type="number" bind:value={price} id="cena" class="form-control" placeholder="Cena" required>
+                
+                <select id="category" class="form-control" bind:value={category}>
+                    <option value="" disabled selected>Vyberte kategorii</option>
+                    {#each categories as category}
+                        <option value={category.id}>{category.name}</option>
+                    {/each}
+                </select>
+
+                <input type="text" bind:value={location} class="form-control" placeholder="Lokace" required>
+
+                <textarea id="description" bind:value={description} class="form-control" placeholder="Popis" required></textarea>
+
+                <label for="fotky">Fotky:</label>
+                <input type="file" id="fotky" class="form-control" accept="image/*" onchange={handleFileChange} multiple required>
             </div>
             <div class="btn-group">
                 <button class="btn" type="submit">Vytvořit inzerát</button>
@@ -72,9 +177,22 @@
         align-items: flex-start;
     }
 
+    form .form-control{
+        width: 100%;
+        min-width: 20vw;
+        border: 0;
+        border-radius: 0.5rem;
+        outline: 0;
+        line-height: 1.5;
+        padding: 5px;
+        margin: 5px;
+        min-height: 6vh;
+    }
+
     form > .form-group{
         width: 100%;
         padding-top: 2vh;
+        color: var(--textcolor);
     }
 
     .form-group > input{

@@ -3,6 +3,7 @@
     import { base } from '$app/paths';
     import { auth, logout } from '$stores/auth';
     import Modal from '../routes/modal.svelte';
+    import { goto } from '$app/navigation';
 
     let showModal = $state(false);
 
@@ -24,35 +25,34 @@
     </div>
     <nav class:open={isMenuOpen}>
         <ul>
-            <li on:click={() => (isMenuOpen = false)}>
+            <li onclick={() => (isMenuOpen = false)}>
                 <a href="{base}/kontakt">Kontakt</a>
             </li>
-            <li on:click={() => (isMenuOpen = false)}>
-                <button class="btn" on:click={() => (showModal = true)}>Přidat inzerát</button>
+            <li onclick={() => (isMenuOpen = false)}>
+                <button class="btn" onclick={() => (showModal = true)}>Přidat inzerát</button>
             </li>
             {#if $auth.user}
-                <li on:click={() => (isMenuOpen = false)} class="profile">
-                    <a href="{base}/profil">Profil</a>
+                <li onclick={() => (isMenuOpen = false)} class="profile">
+                    <a href="{base}/profil/{$auth.user.id}">Profil</a>
                 </li> <!-- Tady by byla kdyžtak nějaká fotka toho obrázku či něčeho, zatím jsem sem dal jen profil --> <!-- obrazek je zatim placeholder.webp-->
-                <li on:click={() => { isMenuOpen = false; logout(); }} class="btn">
+                <li onclick={() => { isMenuOpen = false; logout(); }} class="btn">
                     <a href="/">Odhlásit se</a>
                 </li>                  
             {:else}
-                <li on:click={() => (isMenuOpen = false)} class="btn">
+                <li onclick={() => (isMenuOpen = false)} class="btn">
                     <a href="{base}/login">Přihlášení</a>
                 </li>
             {/if}
         </ul>
     </nav>
-    <button class="burger" on:click={toggleMenu} class:open={isMenuOpen}>
+    <button class="burger" onclick={toggleMenu} class:open={isMenuOpen}>
         <div class="bar-1"></div>
         <div class="bar-2"></div>
         <div class="bar-3"></div>
     </button>
 </div>
-<Modal bind:showModal>
-	
-</Modal>
+
+<Modal bind:showModal />
 
 <style>
     .searchbar{
@@ -161,6 +161,13 @@
         padding-left: 1rem;
         border-radius: 50px;
     }
+
+    .btn:hover{
+        background-color: var(--darkcolor);
+        transition: all 200ms ease-in-out;
+        cursor: pointer;
+    }
+
     .burger{
         height: 28px;
         aspect-ratio: 1;
