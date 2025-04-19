@@ -2,8 +2,11 @@
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
     import { auth, logout } from '$stores/auth';
+    import Modal from '../routes/modal.svelte';
 
-    let isMenuOpen = false;
+    let showModal = $state(false);
+
+    let isMenuOpen = $state(false);
 
     function toggleMenu(){
         isMenuOpen = !isMenuOpen;
@@ -24,15 +27,18 @@
             <li on:click={() => (isMenuOpen = false)}>
                 <a href="{base}/kontakt">Kontakt</a>
             </li>
+            <li on:click={() => (isMenuOpen = false)}>
+                <button class="btn" on:click={() => (showModal = true)}>Přidat inzerát</button>
+            </li>
             {#if $auth.user}
                 <li on:click={() => (isMenuOpen = false)} class="profile">
                     <a href="{base}/profil">Profil</a>
                 </li> <!-- Tady by byla kdyžtak nějaká fotka toho obrázku či něčeho, zatím jsem sem dal jen profil --> <!-- obrazek je zatim placeholder.webp-->
-                <li on:click={() => { isMenuOpen = false; logout(); }} class="sign-in-btn">
+                <li on:click={() => { isMenuOpen = false; logout(); }} class="btn">
                     <a href="/">Odhlásit se</a>
                 </li>                  
             {:else}
-                <li on:click={() => (isMenuOpen = false)} class="sign-in-btn">
+                <li on:click={() => (isMenuOpen = false)} class="btn">
                     <a href="{base}/login">Přihlášení</a>
                 </li>
             {/if}
@@ -44,6 +50,9 @@
         <div class="bar-3"></div>
     </button>
 </div>
+<Modal bind:showModal>
+	
+</Modal>
 
 <style>
     .searchbar{
@@ -60,6 +69,7 @@
         background-color: transparent;
         width: 10%;
         border: none;
+        cursor: pointer;
     }
     .searchbuttonimg{
         width: 50%;
@@ -121,7 +131,6 @@
         gap: 5vh;
         margin-top: 2vh;
         margin-bottom: 4vh;
-        font-size: 1.1rem;
         list-style-type: none;
     }
 
@@ -142,7 +151,9 @@
         color: var(--textcolor);
     }
 
-    .sign-in-btn > a{
+    .btn{
+        font-size: 14pt;
+        border: none;
         background-color: var(--mediumcolor);
         color: var(--white);
         padding: 0.5rem;
@@ -186,7 +197,6 @@
     .burger.open .bar-3{
         transform: rotateZ(-45deg);
     }
-    
 
     @media only screen and (min-width: 768px) {
         .logo{
@@ -205,7 +215,7 @@
             gap: 2vw;
         }
 
-        .sign-in-btn {
+        .btn {
             margin-right: 2vw;
         }
     }

@@ -29,9 +29,9 @@
     .cardholder{
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         width: 100%;
-        margin-top: 50px;
+        margin: 50px;
     }
 
     .card{

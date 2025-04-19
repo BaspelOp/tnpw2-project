@@ -89,7 +89,7 @@
 
     form > .form-group{
         width: 100%;
-        padding-top: 2vh
+        padding-top: 2vh;
     }
 
     .form-group > input{
