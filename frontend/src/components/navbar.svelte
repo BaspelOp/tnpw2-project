@@ -6,8 +6,8 @@
     import { goto } from '$app/navigation';
 
     let showModal = $state(false);
-
     let isMenuOpen = $state(false);
+    let searchQuery = $state('');
 
     function toggleMenu(){
         isMenuOpen = !isMenuOpen;
@@ -20,8 +20,10 @@
 <div class="navbar">
     <a href="/" class="logo"><img src="{base}/media/logo_main.svg" alt="AUTODILY.CZ"></a>
     <div class="searchbar">
-        <input type="text" class="searchbar-text" placeholder="Vyhledat">
-        <button type="button" class="searchbutton"><img class="searchbuttonimg" src="{base}/media/searchbutton.svg"></button>
+        <input bind:value={searchQuery} type="text" class="searchbar-text" placeholder="Vyhledat">
+        <button type="button" class="searchbutton">
+            <img class="searchbuttonimg" src="{base}/media/searchbutton.svg" alt="Vyhledat">
+        </button>
     </div>
     <nav class:open={isMenuOpen}>
         <ul>
@@ -34,7 +36,7 @@
             {#if $auth.user}
                 <li onclick={() => (isMenuOpen = false)} class="profile">
                     <a href="{base}/profil/{$auth.user.id}">Profil</a>
-                </li> <!-- Tady by byla kdyžtak nějaká fotka toho obrázku či něčeho, zatím jsem sem dal jen profil --> <!-- obrazek je zatim placeholder.webp-->
+                </li>
                 <li onclick={() => { isMenuOpen = false; logout(); }} class="btn">
                     <a href="/">Odhlásit se</a>
                 </li>                  
@@ -106,14 +108,14 @@
 
     @media only screen and (max-width: 767px){
         nav{
-        opacity: 0;
-        display: block;
-        position: absolute;
-        top:100%;
-        left: 100%;
-        background-color: var(--lightcolor);
-        width: 100%;
-        transition: all 300ms ease-in-out;
+            opacity: 0;
+            display: block;
+            position: absolute;
+            top:100%;
+            left: 100%;
+            background-color: var(--lightcolor);
+            width: 100%;
+            transition: all 300ms ease-in-out;
         }
     }
 

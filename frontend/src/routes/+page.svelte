@@ -26,29 +26,34 @@
 </main>
 
 <style>
-    .cardholder{
+    .cardholder {
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start;
         width: 100%;
-        margin: 50px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+        gap: 2rem;
     }
 
-    .card{
+    .card {
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #ffffff;
+        background-color: #fff;
         color: var(--textcolor2);
-        height: 20vh;
-        width: 20vh;
+        height: 200px;
+        width: 200px;
         border-radius: 10px;
-        margin: 5px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        transition: box-shadow 200ms ease-in-out, transform 200ms;
+        cursor: pointer;
     }
 
-    .card:hover{
-        box-shadow: 0 0 10px gray;
-        transition: 200ms ease-in-out;
+    .card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+        transform: translateY(-4px) scale(1.04);
     }
 
     img{
@@ -56,5 +61,17 @@
         overflow: hidden;
         width: 75%;
         height: 75%;
+    }
+
+    @media (max-width: 600px) {
+        .cardholder {
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem 0.5rem;
+        }
+        .card {
+            width: 90vw;
+            height: 120px;
+        }
     }
 </style>

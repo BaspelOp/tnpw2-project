@@ -24,6 +24,7 @@
     let imagesFile = $state([]);
     let location = $state('');
     let category = $state('');
+    let errorMessage = $state('');
 
     function handleFileChange(e) {
         imagesFile = Array.from(e.target.files);
@@ -79,15 +80,15 @@
                 body: formData
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to create advertisement');
-            }
-
             const data = await response.json();
-            console.log("Advertisement created:", data);
+            if (!response.ok) {
+                errorMessage = data.error || data.errors[0].msg || 'Něco se pokazilo, zkuste to znovu!';
+                return;
+            }
 
             dialog.close();
         } catch (error) {
+            errorMessage = 'Chyba serveru';
             console.error('Error creating advertisement:', error);
         }
     }
@@ -106,6 +107,11 @@
     <button class="closebtn" autofocus onclick={() => dialog.close()}>Zavřít</button>
     <div class="login-card">
         <h1>Přidat inzerát</h1>
+        {#if errorMessage}
+            <div class="alert">
+                {errorMessage}
+            </div>
+        {/if}
 		<form onsubmit={createAdvertisement}>
             <div class="form-group">
                 <input type="text" bind:value={title} id="nazev" class="form-control" placeholder="Název inzerátu" required>
@@ -237,5 +243,11 @@
         border: none;
         cursor: pointer;
         padding: 10px;
+    }
+    .alert{
+        background-color: var(--darkcolor);
+        color: var(--errorcolor);
+        border-radius: 10px;
+        padding: 1vh;
     }
 </style>

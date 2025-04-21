@@ -19,7 +19,7 @@
 
             const data = await response.json();
             if (!response.ok) {
-                errorMessage = data.error || 'Něco se pokazilo, zkuste to znovu';
+                errorMessage = data.error || data.errors[0].msg || 'Něco se pokazilo, zkuste to znovu!';
                 return;
             }
 

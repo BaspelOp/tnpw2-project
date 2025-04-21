@@ -15,10 +15,10 @@
 <main>
     <div class="page">
         <Navbar />
-                <slot></slot>
-            <div class="container">
+            <slot></slot>
+            <!-- <div class="container">
                 
-            </div>
+            </div> -->
         <Footer />       
     </div>
 </main>
@@ -63,7 +63,7 @@
     }
 
     .page{
-        margin: 50px;
+        margin: 0;
         margin-bottom: 0px;
         min-height: 100vh;
         display: flex;

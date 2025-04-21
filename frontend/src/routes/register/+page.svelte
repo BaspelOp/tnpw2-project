@@ -19,8 +19,11 @@
             })
 
             const data = await response.json();
+
+            console.log(data);
+
             if (!response.ok) {
-                errorMessage = data.error || 'Něco se pokazilo, zkuste to znovu';
+                errorMessage = data.error || data.errors[0].msg || 'Něco se pokazilo, zkuste to znovu';
                 return;
             }
 
@@ -46,7 +49,7 @@
                 <input type="text" bind:value={username} class="form-control" aria-describedby="emailHelp" placeholder="Jméno" required>
             </div>
             <div class="form-group">
-                <input type="tel" bind:value={phone} class="form-control" aria-describedby="emailHelp" placeholder="Telefon" size="9" required>
+                <input type="telephone" bind:value={phone} class="form-control" aria-describedby="emailHelp" placeholder="Telefon" size="9" required>
             </div>
             <div class="form-group">
                 <input type="email" bind:value={email} class="form-control" aria-describedby="emailHelp" placeholder="adresa@seznam.cz" required>
