@@ -3,6 +3,9 @@ const router = express.Router();
 const { pool } = require('../database');
 const authenticateToken = require('../middleware/authenticateToken');
 
+// Pro kontrolu file type
+const fileType = require('file-type');
+
 // Pro uložení obrázků
 const multer = require('multer');
 const fs = require('fs');
@@ -21,11 +24,37 @@ const storage = multer.diskStorage({
         cb(null, uniqueName);
     }
 });
-const upload = multer({ storage: storage });
+
+const fileFilter = async (_, file, cb) => {
+    const allowedMimes = ['image/jpeg', 'image/png'];
+    const realType = await fileType.fromBuffer(file.buffer);
+    
+    if (!realType || !allowedMimes.includes(realType.mime)) {
+        return cb(new Error('Povolené pouze JPEG/PNG'), false);
+    }
+    cb(null, true);
+};
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+});
 
 // Endpoint pro vytvoření inzerátu
-router.post('/create', authenticateToken, upload.array('images', 10), async (req, res) => {
+router.post('/create', authenticateToken, [
+    body('category_id').notEmpty().withMessage('Není vyplněna kategorie!'),
+    body('title').notEmpty().withMessage('Není vyplněn název!'),
+    body('description').notEmpty().withMessage('Přidej nějaký popisek!'),
+    body('price').notEmpty().isFloat({ min: 0}).withMessage('Není vyplněna cena, nesmí být záporná!'),
+    body('location').notEmpty().withMessage('Není vyplněno místo prodeje!'),
+], upload.array('images', 10), async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {    
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const { category_id, title, description, price, location } = req.body;
         const user_id = req.user.id;
 
@@ -63,8 +92,6 @@ router.post('/create', authenticateToken, upload.array('images', 10), async (req
         if (imagePaths.length === 0) {
             return res.status(500).json({ error: "Nahrání obrázků se nezdařilo!" });
         }
-
-        // res.status(201).json({ message: "Inzerát byl úspěšně vytvořen!", advertisement_id, imagePaths });
 
         res.status(201).json({ message: "Inzerát byl úspěšně vytvořen!" });
     } catch (err) {
@@ -154,7 +181,7 @@ router.get('/getAll', async (_, res) => {
 });
 
 // Endpoint pro smazáni inzerátu
-router.post('/delete', authenticateToken, async (req, res) => {
+router.post('/delete', authenticateToken, checkAdvertisementOwnership, async (req, res) => {
     try {
         const { advertisement_id } = req.body;
 
@@ -163,7 +190,7 @@ router.post('/delete', authenticateToken, async (req, res) => {
         }
 
         const [result] = await pool.query(
-            'DELETE FROM advertisements WHERE id = ?',
+            'DELETE FROM advertisement WHERE id = ?',
             [advertisement_id]
         );
 

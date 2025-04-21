@@ -3,19 +3,35 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { pool } = require('../database');
 
+// Pro validaci příchozích dat
+const { body, validationResult } = require('express-validator');
+
 // JWT autentikace
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = process.env.JWT_SECRET;
 
 // Endpoint pro registraci uživatele
-router.post('/register', async (req, res) => {
+router.post('/register', [
+        body('email').isEmail().withMessage('Email není platný!'),
+        body('phone').isMobilePhone('cs-CZ').withMessage('Telefonní číslo není platné!'),
+        body('password').isLength({ min: 8 }).withMessage('Heslo musí mít alespoň 8 znaků'),
+        body('username').isLength({ min: 3 }).withMessage('Uživatelské jméno musí mít alespoň 3 znaky')
+], async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        // Získání dat z těla požadavku
         const { username, email, phone, password } = req.body;
 
+        // Kontrola, zda jsou všechna pole vyplněna
         if (!username || !email || !phone || !password) {
             return res.status(400).json({ error: "Všechna pole nejsou vyplněna!" });
         }
 
+        // Kontrola, zda uživatel již existuje
         const [existing] = await pool.query(
             'SELECT * FROM users WHERE email = ? OR username = ? OR phone = ?', 
             [email, username, phone]
@@ -36,28 +52,40 @@ router.post('/register', async (req, res) => {
             return res.status(409).json({ error: `Účet s tímto ${conflicts.join(', ')} již existuje!` });
         }
 
+        // Hashování hesla
         const salt = 10;
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        // Uložení uživatele do databáze
         const [result] = await pool.query(
             'INSERT INTO users (username, email, phone, password_hash) VALUES (?, ?, ?, ?)',
             [username, email, phone, hashedPassword]
         );
 
+        // Kontrola, zda byla registrace úspěšná
         if (result.affectedRows === 0) {
             return res.status(500).json({ error: "Registrace nebyla úspěšná!" });
         }
 
         res.status(201).json({ message: "Registrace proběhla úspěšně!" });
     } catch (err) {
+        // Zpracování chyb
         console.error("Error: ", err);
         res.status(500).json({ error: "Error" });
     }
 });
 
 // Endpoint pro přihlášení uživatele
-router.post('/login', async (req, res) => {
+router.post('/login', [
+    body('email').isEmail().withMessage('Email není platný!'),
+    body('password').notEmpty().withMessage('Heslo není vyplněno!')
+], async (req, res) => {
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         const { email, password } = req.body;
 
         if (!email || !password) {
