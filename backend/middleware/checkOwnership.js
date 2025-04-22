@@ -9,3 +9,5 @@ async function checkAdvertisementOwnership(req, res, next) {
     }
     next();
 }
+
+module.exports = checkAdvertisementOwnership;

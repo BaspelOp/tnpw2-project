@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../database');
 const authenticateToken = require('../middleware/authenticateToken');
+const checkAdvertisementOwnership = require('../middleware/checkOwnership');
 
-// Pro kontrolu file type
-const fileType = require('file-type');
+// Pro validaci příchozích dat
+const { body, validationResult } = require('express-validator');
 
 // Pro uložení obrázků
 const multer = require('multer');
@@ -25,19 +26,8 @@ const storage = multer.diskStorage({
     }
 });
 
-const fileFilter = async (_, file, cb) => {
-    const allowedMimes = ['image/jpeg', 'image/png'];
-    const realType = await fileType.fromBuffer(file.buffer);
-    
-    if (!realType || !allowedMimes.includes(realType.mime)) {
-        return cb(new Error('Povolené pouze JPEG/PNG'), false);
-    }
-    cb(null, true);
-};
-
 const upload = multer({ 
     storage: storage,
-    fileFilter: fileFilter,
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB
 });
 
