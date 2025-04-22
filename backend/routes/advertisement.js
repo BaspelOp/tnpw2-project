@@ -33,11 +33,11 @@ const upload = multer({
 
 // Endpoint pro vytvoření inzerátu
 router.post('/create', authenticateToken, [
-    body('category_id').notEmpty().withMessage('Není vyplněna kategorie!'),
-    body('title').notEmpty().withMessage('Není vyplněn název!'),
-    body('description').notEmpty().withMessage('Přidej nějaký popisek!'),
-    body('price').notEmpty().isFloat({ min: 0}).withMessage('Není vyplněna cena, nesmí být záporná!'),
-    body('location').notEmpty().withMessage('Není vyplněno místo prodeje!'),
+    body('category_id').isEmpty().withMessage('Není vyplněna kategorie!'),
+    body('title').isEmpty().withMessage('Není vyplněn název!'),
+    body('description').isEmpty().withMessage('Přidej nějaký popisek!'),
+    body('price').isEmpty().withMessage('Není vyplněna cena, nesmí být záporná!'),
+    body('location').isEmpty().withMessage('Není vyplněno místo prodeje!'),
 ], upload.array('images', 10), async (req, res) => {
     try {
         const errors = validationResult(req);
