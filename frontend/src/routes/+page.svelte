@@ -2,6 +2,7 @@
     import { base } from '$app/paths';
     import { onMount } from 'svelte';
     import { dataStore } from '$stores/dataStore';
+    import Starrating from './starrating.svelte';
 
     export let data;
 
@@ -17,7 +18,7 @@
     </a>
     <div class="container">
         <div class="cardholder">
-            <Starrating></Starrating> <!--zde odstranit-->
+            <Starrating></Starrating>
             <div class="card">
                 <p>Motory</p>
                 <img src="{base}/media/engine.svg" alt="Motor">
