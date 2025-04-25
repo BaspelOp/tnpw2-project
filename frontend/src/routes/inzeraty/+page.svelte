@@ -3,8 +3,19 @@
     import { base } from '$app/paths';
     import { onMount } from 'svelte';
     import { dataStore } from '$stores/dataStore';
+    import { auth } from '$stores/auth';
+    import { searchQuery } from '$stores/searchStore';
 
     $: advertisements = $dataStore;
+    $: filteredAds = advertisements.filter(ad => {
+        return (
+            !$searchQuery ||
+            ad.title.toLowerCase().includes($searchQuery.toLowerCase()) ||
+            ad.description.toLowerCase().includes($searchQuery.toLowerCase()) ||
+            ad.category_name.toLowerCase().includes($searchQuery.toLowerCase()) ||
+            ad.location.toLowerCase().includes($searchQuery.toLowerCase())
+        );
+    });
 
     let showModal = false;
     let selectedAd = null;
@@ -27,6 +38,51 @@
     function goToProfile(userId) {
         goto(`/profil/${userId}`);
         closeModal();
+    }
+
+    async function toggleFavorite(advertisement_id) {
+        try {
+            const response = await fetch('http://localhost:3000/api/favorites/add', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${$auth.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ advertisement_id })
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to toggle favorite');
+            }
+
+            dataStore.update((ads) => ads.map(ad => ad.id === advertisement_id ? { ...ad, is_favorite: !ad.is_favorite } : ad));
+        } catch (error) {
+            console.error('Error toggling favorite:', error);
+        }
+    }
+
+    async function deleteAd(advertisement_id) {
+        try {
+            const response = await fetch('http://localhost:3000/api/advertisements/delete', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${$auth.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ advertisement_id })
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to delete advertisement');
+            }
+
+            dataStore.update((ads) => ads.filter(ad => ad.id !== advertisement_id));
+            closeModal();
+        } catch (error) {
+            console.error('Error deleting ad:', error);
+        }
     }
 </script>
 
@@ -63,9 +119,22 @@
                     <span><b>Kategorie:</b> {selectedAd.category_name}</span>
                     <span><b>Přidáno:</b> {(new Date(selectedAd.created_at)).toLocaleDateString("cs-CZ")}</span>
                 </div>
-                <button class="profile-btn" on:click={() => goToProfile(selectedAd.user_id)}>
-                    Přejít na profil uživatele
-                </button>
+                <!-- <button class="favorite-btn" on:click={() => toggleFavorite(selectedAd.id)}>
+                    {#if isFavorite(selectedAd.id)}
+                        <span title="Odebrat z oblíbených">★</span>
+                    {:else}
+                        <span title="Přidat do oblíbených">☆</span>
+                    {/if}
+                </button> -->
+                {#if $auth.user.id != selectedAd.user_id}
+                    <button class="profile-btn" on:click={() => goToProfile(selectedAd.user_id)}>
+                        Přejít na profil uživatele
+                    </button>
+                {:else}
+                    <button class="profile-btn" on:click={() => deleteAd(selectedAd.id)}>
+                        Smazat inzerát
+                    </button>
+                {/if}
             </div>
         </div>
     </div>
@@ -74,7 +143,7 @@
 <main>
     <div class="container">
         <div class="cardholder">
-            {#each advertisements as advertisement}
+            {#each filteredAds as advertisement}
                 <div class="card" id="card">
                     <div class="image-wrapper">
                         <img src="http://localhost:3000/{advertisement.images[mainImageIndex]}" alt="placehodlertext" />
@@ -303,12 +372,12 @@
     .modal-body .popis {
         font-size: 1rem;
         margin-bottom: 0.7rem;
-        color: #333;
+        color: var(--fontcolor);
         white-space: pre-line;
     }
     .modal-info {
         font-size: 0.95rem;
-        color: #555;
+        color: var(--fontcolor);
         margin-bottom: 1rem;
         display: flex;
         flex-direction: column;

@@ -1,3 +1,5 @@
+const { pool } = require('../database');
+
 async function checkAdvertisementOwnership(req, res, next) {
     const [result ] = await pool.query(
         'SELECT user_id FROM advertisement WHERE id = ?',

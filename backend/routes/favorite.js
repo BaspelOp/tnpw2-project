@@ -65,24 +65,24 @@ router.post('/remove', authenticateToken, async (req, res) => {
 });
 
 // Endpoint pro get všech oblíbených inzerátů
-router.get('/getAll', authenticateToken, async (req, res) => {
+router.post('/getById', async (req, res) => {
     try {
-        const user_id = req.user.id;
+        const user_id = req.body.user_id;
 
         if (!user_id) {
             return res.status(400).json({ error: "Není vyplněno user_id!" });
         }
 
         const [result] = await pool.query(`
-            SELECT advertisements.id, advertisements.title, advertisements.description, advertisements.price,
-                   advertisements.location, advertisements.status, advertisements.created_at,
+            SELECT advertisement.id, advertisement.title, advertisement.description, advertisement.price,
+                   advertisement.location, advertisement.status, advertisement.created_at,
                    users.id AS user_id, users.username, users.email,
-                   categories.id AS category_id, categories.name AS category_name
-            FROM favorites
-            JOIN advertisements ON favorites.advertisement_id = advertisements.id
-            JOIN users ON advertisements.user_id = users.id
-            JOIN categories ON advertisements.category_id = categories.id
-            WHERE favorites.user_id = ?;
+                   category.id AS category_id, category.name AS category_name
+            FROM favorite
+            JOIN advertisement ON favorite.advertisement_id = advertisement.id
+            JOIN users ON advertisement.user_id = users.id
+            JOIN category ON advertisement.category_id = category.id
+            WHERE favorite.user_id = ?;
         `, [user_id]);
 
         res.json(result);

@@ -5,10 +5,11 @@
     import Modal from '../routes/modal.svelte';
     import { goto } from '$app/navigation';
     import { dataStore } from '$stores/dataStore';
+    import { searchQuery } from '$stores/searchStore';
+    import { page } from '$app/state';
 
     let showModal = $state(false);
     let isMenuOpen = $state(false);
-    let searchQuery = $state('');
 
     function toggleMenu(){
         isMenuOpen = !isMenuOpen;
@@ -20,16 +21,23 @@
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <div class="navbar">
     <a href="/" class="logo"><img src="{base}/media/logo_main.svg" alt="AUTODILY.CZ"></a>
-    <div class="searchbar">
-        <input bind:value={searchQuery} type="text" class="searchbar-text" placeholder="Vyhledat">
-        <button type="button" class="searchbutton">
-            <img class="searchbuttonimg" src="{base}/media/searchbutton.svg" alt="Vyhledat">
-        </button>
-    </div>
+
+    {#if page.url.pathname == '/inzeraty'}
+        <div class="searchbar">
+            <input bind:value={$searchQuery} type="text" class="searchbar-text" placeholder="Vyhledat">
+            <button type="button" class="searchbutton">
+                <img class="searchbuttonimg" src="{base}/media/searchbutton.svg" alt="Vyhledat">
+            </button>
+        </div>
+    {/if}
+
     <nav class:open={isMenuOpen}>
         <ul>
             <li onclick={() => (isMenuOpen = false)}>
                 <a href="{base}/kontakt">Kontakt</a>
+            </li>
+            <li onclick={() => (isMenuOpen = false)}>
+                <a href="{base}/inzeraty">Inzeráty</a>
             </li>
             <li onclick={() => (isMenuOpen = false)}>
                 <button class="btn" onclick={() => (showModal = true)}>Přidat inzerát</button>
