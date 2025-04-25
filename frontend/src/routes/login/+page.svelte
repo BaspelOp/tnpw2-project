@@ -74,6 +74,7 @@
         }
         .login-card{
             border-radius: 0;
+            margin:0;
         }
         form{
             min-width: 100%;
