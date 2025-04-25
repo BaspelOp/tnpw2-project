@@ -126,7 +126,7 @@
                         <span title="Přidat do oblíbených">☆</span>
                     {/if}
                 </button> -->
-                {#if $auth.user.id != selectedAd.user_id}
+                {#if $auth.user && $auth.user.id != selectedAd.user_id || $auth.user == null}
                     <button class="profile-btn" on:click={() => goToProfile(selectedAd.user_id)}>
                         Přejít na profil uživatele
                     </button>

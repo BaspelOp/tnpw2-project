@@ -14,7 +14,7 @@ router.post('/add', authenticateToken, async (req, res) => {
         }
 
         const [existing] = await pool.query(
-            'SELECT * FROM favorites WHERE user_id = ? AND advertisement_id = ?',
+            'SELECT * FROM favorite WHERE user_id = ? AND advertisement_id = ?',
             [user_id, advertisement_id]
         );
 
@@ -23,7 +23,7 @@ router.post('/add', authenticateToken, async (req, res) => {
         }
 
         const [result] = await pool.query(
-            'INSERT INTO favorites (user_id, advertisement_id) VALUES (?, ?)',
+            'INSERT INTO favorite (user_id, advertisement_id) VALUES (?, ?)',
             [user_id, advertisement_id]
         );
 
@@ -49,7 +49,7 @@ router.post('/remove', authenticateToken, async (req, res) => {
         }
 
         const [result] = await pool.query(
-            'DELETE FROM favorites WHERE user_id = ? AND advertisement_id = ?',
+            'DELETE FROM favorite WHERE user_id = ? AND advertisement_id = ?',
             [user_id, advertisement_id]
         );
 

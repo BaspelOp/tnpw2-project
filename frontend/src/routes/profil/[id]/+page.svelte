@@ -279,7 +279,7 @@
                         <span title="Přidat do oblíbených">☆</span>
                     {/if}
                 </button> -->
-                {#if $auth.user.id}
+                {#if $auth.user && $auth.user.id}
                     <button class="profile-btn" on:click={() => deleteAd(selectedAd.id)}>
                         Smazat inzerát
                     </button>
@@ -324,7 +324,7 @@
         <div class="profilecardholder">
             <div class="profilecard">
                 <img class="profilepicture" src="{base}/media/placeholder.webp" alt="Profilová fotka">
-                {#if userId != $auth.user.id}
+                {#if $auth.user && $auth.user.id != userId}
                     <button on:click={() => writeReview(userId, $auth.user.id)} class="message">Napsat hodnocení</button>
                 {/if}
                 {#if $userData.reviews && $userData.reviews.length > 0}
