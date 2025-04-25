@@ -4,6 +4,7 @@
     import { auth, logout } from '$stores/auth';
     import Modal from '../routes/modal.svelte';
     import { goto } from '$app/navigation';
+    import { dataStore } from '$stores/dataStore';
 
     let showModal = $state(false);
     let isMenuOpen = $state(false);

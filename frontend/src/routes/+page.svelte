@@ -1,8 +1,20 @@
 <script>
     import { base } from '$app/paths';
+    import { onMount } from 'svelte';
+    import { dataStore } from '$stores/dataStore';
+
+    export let data;
+
+    onMount(() => {
+        dataStore.set(data.initialData);
+        console.log("Data loaded:", data.initialData);
+    });
 </script>
 
 <main>
+    <a href="/inzeraty">
+        Inzeráty
+    </a>
     <div class="container">
         <div class="cardholder">
             <div class="card">
