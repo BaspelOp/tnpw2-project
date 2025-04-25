@@ -1,10 +1,12 @@
 <script>
     import { base } from '$app/paths';
+    import Starrating from '../routes/starrating.svelte';
 </script>
 
 <main>
     <div class="container">
         <div class="cardholder">
+            <Starrating></Starrating> <!--zde odstranit-->
             <div class="card">
                 <p>Motory</p>
                 <img src="{base}/media/engine.svg" alt="Motor">
