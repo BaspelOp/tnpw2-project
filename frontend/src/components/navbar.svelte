@@ -126,6 +126,13 @@
             width: 100%;
             transition: all 300ms ease-in-out;
         }
+        .logo{
+            scale: 0.50;
+            margin: 0;
+        }
+        .searchbar{
+            max-width: 100%;
+        }
     }
 
     nav.open{
@@ -174,7 +181,6 @@
     }
 
     .btn:hover{
-        background-color: var(--darkcolor);
         transition: all 200ms ease-in-out;
         cursor: pointer;
     }
